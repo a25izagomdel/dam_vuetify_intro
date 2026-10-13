@@ -46,17 +46,23 @@ async function mesInfo(imdbID) {
 <template>
   <v-container>
     <v-text-field
+      style="background-color: #1E293B;"
       v-model="cerca"
       label="Què vols cercar?"
       :disabled="carregant"
       @keyup.enter="buscar"
     ></v-text-field>
 
-    <v-btn :disabled="carregant" @click="buscar">
+    <v-btn style="margin-bottom: 10px;
+                  margin-top: 10px;
+                  background-color: #3B82F6;"
+      :disabled="carregant" @click="buscar">
       Cercar
     </v-btn>
 
-    <v-btn
+    <v-btn style="margin-bottom: 10px;
+                  margin-top: 10px;
+                  background-color: #3B82F6;"
       class="ml-2"
       :disabled="carregant"
       @click="netejar"
@@ -78,52 +84,63 @@ async function mesInfo(imdbID) {
     >
       No s'han trobat pel·lícules per a "{{ cerca }}".
     </v-alert>
-
     <v-row>
       <v-col
-        v-for="element in resultats"
-        :key="element.imdbID"
-        cols="12"
-        md="3"
-      >
-        <v-card>
-          {{ element.Title }}
-          <img :src="element.Poster" alt="">
-          {{ element.Year }}
-          <br>
-          {{ element.Type }}
-          <br>
+    v-for="element in resultats"
+    :key="element.imdbID"
+    cols="12"
+    md="3"
+    class="d-flex"
+  >
+    <v-card
+      class="d-flex flex-column w-100"
+      style="background-color: #1E293B;"
+    >
+      <h4 class="titol-peli">
+        {{ element.Title }}
+        ({{ element.Year }})
+      </h4>
+      <span>{{ element.Type }}</span>
 
-          <v-dialog max-width="500">
-            <template v-slot:activator="{ props: activatorProps }">
-              <v-btn
-                v-bind="activatorProps"
-                color="surface-variant"
-                text="Més Informació"
-                variant="flat"
-                @click="mesInfo(element.imdbID)"
-              ></v-btn>
-            </template>
+      <v-img
+        :src="element.Poster"
+        height="450"
+        cover
+      ></v-img>
+
+      <v-spacer></v-spacer>
+
+      <v-dialog max-width="500">
+        <template v-slot:activator="{ props: activatorProps }">
+          <v-btn
+            style="margin: 10px 5px 10px 5px; background-color: #3B82F6;"
+            v-bind="activatorProps"
+            color="surface-variant"
+            text="Més Informació"
+            variant="flat"
+            @click="mesInfo(element.imdbID)"
+          ></v-btn>
+        </template>
 
             <template v-slot:default="{ isActive }">
               <v-card title="Plot">
                 <v-card-text>
-                  Director: {{ info?.Director }}
+                  <b>Director:</b> {{ info?.Director }}
                 </v-card-text>
                 <v-card-text>
-                    Actors: {{ info?.Actors }}
+                    <b>Actors:</b> {{ info?.Actors }}
                 </v-card-text>
                 <v-card-text>
-                    Plot: {{ info?.Plot }}
+                    <b>Plot:</b> {{ info?.Plot }}
                 </v-card-text>
                 <v-card-text>
-                    Durada: {{ info?.Runtime }}
+                    <b>Durada:</b> {{ info?.Runtime }}
                 </v-card-text>
                 <v-card-text>
-                    Genere: {{ info?.Genre }}
+                    <b>Genere:</b> {{ info?.Genre }}
                 </v-card-text>
                 <v-card-text>
-                    Valoració: {{ info?.Ratings[0].Value }}
+                    <b>Valoració:</b> {{ info?.Ratings[0].Value }}
                 </v-card-text>
 
                 <v-card-actions>
@@ -141,3 +158,9 @@ async function mesInfo(imdbID) {
     </v-row>
   </v-container>
 </template>
+
+<style scoped>
+.titol-peli {
+  min-height: 3em;
+}
+</style>
